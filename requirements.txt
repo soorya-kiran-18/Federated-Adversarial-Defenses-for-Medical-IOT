@@ -1,0 +1,25 @@
+# ── Swarm-Dynamic Federated Adversarial Defense for Medical IoT ──────────────
+# Core numerics / data
+numpy>=1.26
+pandas>=2.2
+scipy>=1.13
+scikit-learn>=1.5
+
+# Deep learning
+torch>=2.5
+torch-geometric>=2.6          # GNN detector (pure-python; torch-scatter NOT required)
+
+# Federated learning
+flwr>=1.15                    # Flower orchestration (simulation + ClientApp/ServerApp)
+
+# Differential privacy
+opacus>=1.5                   # DP-SGD: gradient clipping + Gaussian noise + RDP accountant
+
+# IoT digital twin
+paho-mqtt>=2.1                # MQTT client for device simulators
+
+# Experiment tracking / plotting
+matplotlib>=3.9
+pyyaml>=6.0
+tqdm>=4.66
+tabulate>=0.9

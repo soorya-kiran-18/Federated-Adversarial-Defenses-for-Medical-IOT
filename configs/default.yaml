@@ -1,0 +1,64 @@
+# ── Default experiment configuration ─────────────────────────────────────────
+# Every value here mirrors a field in swarmdef/config.py. Override on the CLI:
+#     python run_demo.py --config configs/default.yaml --set federated.n_rounds=20
+seed: 42
+device: auto
+
+twin:
+  broker_host: 127.0.0.1
+  broker_port: 1883
+  topic_root: hospital
+  devices_per_hospital: 5
+  publish_hz: 5.0
+  duration_s: 60.0
+  attack_probability: 0.0
+
+data:
+  source: auto            # auto -> use CIC-IoT2023 if present, else synthetic twin traffic
+  n_samples: 24000
+  test_fraction: 0.2
+  val_fraction: 0.1
+  dirichlet_alpha: 0.4    # lower => more non-IID attack mix per hospital
+  window_size: 8
+
+detector:
+  arch: gnn               # gnn | transformer | mlp
+  hidden_dim: 64
+  n_layers: 2
+  dropout: 0.2
+  lr: 0.001
+  batch_size: 64
+  local_epochs: 2
+  central_epochs: 30
+  graph_knn: 4
+
+gan:
+  enabled: true
+  latent_dim: 16
+  hidden_dim: 64
+  epochs: 20
+  epsilon: 0.5            # L-inf perturbation budget (normalised feature space)
+  mutable_fraction: 0.5   # only non-critical features may be perturbed
+  adv_train_ratio: 0.5
+  warmup_rounds: 2
+
+privacy:
+  enabled: false
+  max_grad_norm: 1.0      # clipping threshold C
+  noise_multiplier: 0.8   # sigma
+  target_delta: 1.0e-5
+  accountant: rdp
+
+federated:
+  n_rounds: 15
+  n_clients: 4
+  clients_per_round: 1.0
+  aggregator: fedavg      # fedavg | krum | multikrum | trimmed_mean | median
+  trim_ratio: 0.25
+  byzantine_clients: 0
+  byzantine_attack: sign_flip
+
+eval:
+  run_name: default
+  save_models: true
+  plot: true
